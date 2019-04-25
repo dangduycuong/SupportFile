@@ -1,0 +1,74 @@
+có 1 data json như sau: 
+{
+    "type": "FeatureCollection",
+    "metadata": {
+        "generated": 1556177358000,
+        "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson",
+        "title": "USGS Magnitude 4.5+ Earthquakes, Past Week",
+        "status": 200,
+        "api": "1.8.1",
+        "count": 101
+    },
+...
+
+
+
+cách đục thẳng vào trong:
+
+import Foundation
+
+class EarthQuakeModel {
+    var type: String?
+    var generated : Int?
+    var url: String?
+    var title: String?
+    var api: String?
+    var box: [Double] = []
+    
+    
+    init(dict: JSON) {
+        let metadata = dict["metadata"] as? JSON ?? [:]
+        
+        type = metadata["type"] as? String ?? ""
+        generated = metadata["generated"] as? Int ?? 0
+        url = metadata["url"] as? String ?? ""
+        title = metadata["title"] as? String ?? ""
+        api = metadata["api"] as? String ?? ""
+        let bbox = dict["bbox"] as? [Double] ?? []
+        for item in bbox {
+            box.append(item)
+        }
+    }
+}
+
+
+cách call api
+
+
+import Foundation
+typealias JSON = Dictionary<AnyHashable, Any>
+class DataService {
+    static var sharedInstance = DataService()
+    
+    func makeDataTaskRequest(completionHandler: @escaping (EarthQuakeModel) -> Void) {
+        let uRL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
+        guard let url = URL(string: uRL) else {return}
+        let urlRequest = URLRequest(url: url)
+        let task = URLSession.shared.dataTask(with: urlRequest) {(data, respone, error) in
+            guard error == nil else {
+                return
+            }
+            guard let aData = data else {return}
+            do {
+                if let jsonObject = try JSONSerialization.jsonObject(with: aData, options: .mutableContainers) as? JSON {
+                    DispatchQueue.main.async {
+                        completionHandler(EarthQuakeModel(dict: jsonObject))
+                    }
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
+}

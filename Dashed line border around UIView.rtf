@@ -1,0 +1,38 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fswiss\fcharset0 ArialMT;}
+{\colortbl;\red255\green255\blue255;\red36\green38\blue41;\red235\green236\blue237;\red37\green127\blue159;
+\red104\green26\blue29;\red43\green39\blue19;\red27\green29\blue31;\red255\green255\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c18824\c20000\c21176;\cssrgb\c93725\c94118\c94510;\cssrgb\c16863\c56863\c68627;
+\cssrgb\c49020\c15294\c15294;\cssrgb\c22353\c20000\c9412;\cssrgb\c14118\c15294\c16078;\cssrgb\c100000\c100000\c100000;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl300\partightenfactor0
+
+\f0\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 extension \cf4 \strokec4 UIView\cf2 \strokec2  \{\
+  func addDashedBorder() \{\
+    let color = \cf4 \strokec4 UIColor\cf2 \strokec2 .red.cgColor\
+\
+    let shapeLayer:\cf4 \strokec4 CAShapeLayer\cf2 \strokec2  = \cf4 \strokec4 CAShapeLayer\cf2 \strokec2 ()\
+    let frameSize = self.frame.size\
+    let shapeRect = \cf4 \strokec4 CGRect\cf2 \strokec2 (x: \cf5 \strokec5 0\cf2 \strokec2 , y: \cf5 \strokec5 0\cf2 \strokec2 , width: frameSize.width, height: frameSize.height)\
+\
+    shapeLayer.bounds = shapeRect\
+    shapeLayer.position = \cf4 \strokec4 CGPoint\cf2 \strokec2 (x: frameSize.width/\cf5 \strokec5 2\cf2 \strokec2 , y: frameSize.height/\cf5 \strokec5 2\cf2 \strokec2 )\
+    shapeLayer.fillColor = \cf4 \strokec4 UIColor\cf2 \strokec2 .clear.cgColor\
+    shapeLayer.strokeColor = color\
+    shapeLayer.lineWidth = \cf5 \strokec5 2\cf2 \strokec2 \
+    shapeLayer.lineJoin = kCALineJoinRound\
+    shapeLayer.lineDashPattern = [\cf5 \strokec5 6\cf2 \strokec2 ,\cf5 \strokec5 3\cf2 \strokec2 ]\
+    shapeLayer.path = \cf4 \strokec4 UIBezierPath\cf2 \strokec2 (roundedRect: shapeRect, cornerRadius: \cf5 \strokec5 5\cf2 \strokec2 ).cgPath\
+\
+    self.layer.addSublayer(shapeLayer)\
+    \}\
+\}\cf6 \strokec6 \
+\pard\pardeftab720\sl340\sa300\partightenfactor0
+
+\f1\fs30 \cf7 \cb8 \strokec7 To use it:\
+\pard\pardeftab720\sl300\partightenfactor0
+
+\f0\fs26 \cf2 \cb3 \strokec2 anyView.addDashedBorder()\cf6 \strokec6 \
+}
