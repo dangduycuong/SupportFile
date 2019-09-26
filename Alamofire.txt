@@ -1,0 +1,86 @@
+Làm việc với Alamofire
+
+Cho Json: [
+    {
+        "role_id": "33",
+        "role_name": "CHỦ SỞ HỮU",
+        "func_id": "600",
+        "func_name": "Xóa đơn hàng"
+    },
+    {
+        "role_id": "33",
+        "role_name": "CHỦ SỞ HỮU",
+        "func_id": "601",
+        "func_name": "Tạo và sửa đơn hàng"
+    }
+]
+
+// Dạng mảng:
+Pod các thư viện: 
+	
+	pod 'Alamofire'
+ 	 pod 'ObjectMapper', '~> 3.1'
+  	pod 'AlamofireObjectMapper', '~> 5.0'
+	pod 'AlamofireManager', '~> 0.1'
+
+Viết Model:
+	
+	import Foundation
+	import ObjectMapper
+
+	struct RoleUser: Mappable {
+    		var role_id: String?
+    		var role_name: String?
+    		var func_id: String?
+    		var func_name: String?
+    
+    		init?(map: Map) {
+        
+    		}
+    
+    		mutating func mapping(map: Map) {
+        		self.role_id <- map["role_id"]
+        		self.role_name <- map["role_name"]
+        		self.func_id <- map["func_id"]
+        		self.func_name <- map["func_name"]
+    		}
+	}
+
+API URL:
+	Cần: papameter, hearder...
+	DataService:
+	import Foundation
+import Alamofire
+import AlamofireObjectMapper
+
+class DataService {
+    static let sharedInstance: DataService = DataService()
+	
+    func getRoleUser(completedhandle: @escaping([RoleUser]) -> Void, failure: @escaping(String) -> Void) {
+        let url = URL(string: "http://ksan.neo.vn/a2/api?")
+        let parameters: Parameters = ["ServiceType" : "query", "Service" : "mobile_get_all_role", "Provider" : "default", "ParamSize" : "1", "P1" : "longnvneo"]
+        let headers = ["Authorization" : "0d550add9e0120013ceb4454af850baf51e597cf9bb6bf5073e8751b46a8543e4372c1ff5fb0f93b75aa0fd02f738fbeb2900fdcbb5368ab67b7c4b41580ed16"]
+        Alamofire.request(url!, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: headers).responseArray { (data: DataResponse<[RoleUser]>) in
+            switch data.result {
+            case .success:
+                DispatchQueue.main.async {
+                    completedhandle(data.result.value!)
+                }
+            case .failure (let error):
+                failure(error.localizedDescription)
+            }
+        }
+    }
+}
+
+// Gọi ra
+
+Trong class khai báo biến optional var roleUser: [RoleUser]?
+    func setRoleUser() {
+        DataService.sharedInstance.getRoleUser(completedhandle: { [weak self] data in
+            self?.roleUser = data
+            print("Received: \(self?.roleUser)")
+        }, failure: { [weak self] mess in
+            
+        })
+    }
