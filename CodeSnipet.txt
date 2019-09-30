@@ -1,0 +1,3 @@
+- How to remove all the spaces and \n\r in a String?
+let text = "This \n is a st\tri\rng"
+let test = String(text.filter { !" \n\t\r".contains($0) })
