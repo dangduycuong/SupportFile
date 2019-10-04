@@ -1,3 +1,25 @@
 - How to remove all the spaces and \n\r in a String?
 let text = "This \n is a st\tri\rng"
 let test = String(text.filter { !" \n\t\r".contains($0) })
+
+- lấy đường dẫn file (sử dụng RealmSwift)
+	print("Duong dan file: \(Realm.Configuration.defaultConfiguration.fileURL)")
+
+- lấy full link trong alamofire
+
+extension Request {
+    public func debugLog() -> Self {
+        #if DEBUG
+            debugPrint("=======================================")
+            debugPrint(self)
+            debugPrint("=======================================")
+        #endif
+        return self
+    }
+}
+
+// gọi ra
+
+  Alamofire.request(url).debugLog()
+            .responseJSON( completionHandler: { response in
+   })
