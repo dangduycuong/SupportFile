@@ -23,3 +23,18 @@ extension Request {
   Alamofire.request(url).debugLog()
             .responseJSON( completionHandler: { response in
    })
+
+- Remove ký tự bất kỳ trong chuỗi String
+        var phrase = """
+		Any long charactor
+	"""
+        let vowels: Set<Character> = ["\\", "[", "]"]
+        phrase.removeAll(where: { vowels.contains($0) })
+- Action trong alert
+	        let alert = UIAlertController(title: "Thông báo".language(), message: "Bạn chắc chắn xoá", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "KHÔNG".language(), style: .default, handler: nil))
+                
+                alert.addAction(UIAlertAction(title: "CÓ".language(), style: .default, handler: { (alertAction) in
+                    // do something
+                }))
+                self.present(alert, animated: true, completion: nil)
