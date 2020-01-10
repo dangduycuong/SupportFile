@@ -101,3 +101,9 @@ BaseRouter.shared.callAPI(url: finalURL!) { (data: BaseDataModel) in
 self.drinks = data.drinks
 self.tableView.reloadData()
 }
+
+
+KẺ ĐƯỜNG LINE CẠNH CỦA BUTTON
+let bottomLine = UIView(frame: CGRect(x: 0, y: connectLinkSubButton.bounds.height, width: connectLinkSubButton.bounds.width, height: 1))
+        bottomLine.backgroundColor = UIColor.red
+        connectLinkSubButton.addSubview(bottomLine)
