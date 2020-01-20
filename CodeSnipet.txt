@@ -107,3 +107,65 @@ KẺ ĐƯỜNG LINE CẠNH CỦA BUTTON
 let bottomLine = UIView(frame: CGRect(x: 0, y: connectLinkSubButton.bounds.height, width: connectLinkSubButton.bounds.width, height: 1))
         bottomLine.backgroundColor = UIColor.red
         connectLinkSubButton.addSubview(bottomLine)
+
+
+VỊ TRÍ CỦA IMAGE IN BUTTON
+dropdownButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: dropdownButton.bounds.width - (dropdownButton.titleLabel?.bounds.width ?? 0), bottom: 0, right: 0)
+dropdownButton.titleLabel?.bounds.width là tiêu đề button
+
+Vị trí của ảnh so với chữ tiêu đề trong button (bên phải)
+dropdownButton.semanticContentAttribute = UIApplication.shared
+        .userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
+
+=================================================
+// Hàm lọc. Dùng cho search và lọc append
+filtered = data.filter { word in
+            word.lowercased().contains(searchText.lowercased())
+        }
+filerred là mảng kết quả. data là mảng nguồn. (lọc mảng data append vào mảng filtered)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
