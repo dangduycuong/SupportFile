@@ -126,6 +126,57 @@ filerred là mảng kết quả. data là mảng nguồn. (lọc mảng data app
 
 
 
+=================================================
+Ẩn bàn phím textField khi nhập xong
+    @IBOutlet var text: UITextField! {
+      didSet {
+       text.delegate = self
+      }
+}
+
+func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+}
+
+//TextView
+trong viewDidload() 
+        textView.delegate = self
+    
+
+    /* Updated for Swift 4 */
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+
+    /* Older versions of Swift */
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+
+
+=========
+Click button bàn phím thực hiện action
+UISearchBarDelegate {
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        if searchController.searchBar.text?.count ?? 0 < 15 {
+            
+        }
+
+    }
+
+func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+    }
+
 
 
 
