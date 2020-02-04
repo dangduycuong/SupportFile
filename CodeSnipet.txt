@@ -179,20 +179,41 @@ func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 
 ===========
 LỌC Tìm Kiếm:
+Cách 1:
 filteredArray = arrDicts.filter({word in
             word.lowercased().hasPrefix(keyword.lowercased())
         })
 
 filteredArray là kết quả sau khi lọc mảng arrDicts với từ khoá là keyword
 
+Cách 2:
+func filtering() {
+        resultArray = sourceArray.filter({ (laptop: String) in
+            laptop.lowercased().contains(searchTextField.text!.lowercased())
+        })
+}
 
+hàm này chạy để vừa search vừa hiển thị ra kết quả tìm kiếm
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    }
 
+===============
+Lưu ý khi thực hiện xong bài này. Nhập xong với lọc và vừa nhập vừa lọc ra kết quả. Action trong keyboard, textField...
+    Ẩn bàn phím khi thực hiện action. Ẩn khi ấn ra ngoài.
+link chi tiết: https://github.com/dangduycuong/MasterSearch
 
+override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
 
-
-
-
-
+	// Ẩn bàn phím khi ấn ra bên ngoài
+        let tapGestureReconizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGestureReconizer.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGestureReconizer)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 
 
 
