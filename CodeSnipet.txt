@@ -177,7 +177,13 @@ func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         view.endEditing(true)
     }
 
+===========
+LỌC Tìm Kiếm:
+filteredArray = arrDicts.filter({word in
+            word.lowercased().hasPrefix(keyword.lowercased())
+        })
 
+filteredArray là kết quả sau khi lọc mảng arrDicts với từ khoá là keyword
 
 
 
