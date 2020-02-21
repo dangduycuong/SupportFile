@@ -216,8 +216,17 @@ override func viewWillAppear(_ animated: Bool) {
     }
 
 
+=============================================
+	//Giới hạn số ký tự nhập vào searchBar
 
-
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text!.length() > 16 {
+            var searchText = searchBar.text!
+            let range = searchText.index(searchText.startIndex, offsetBy: 16)..<searchText.endIndex
+            searchText.removeSubrange(range)
+            searchBar.text = searchText
+        }
+    }
 
 
 
