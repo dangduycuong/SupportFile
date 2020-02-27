@@ -232,6 +232,18 @@ override func viewWillAppear(_ animated: Bool) {
 
 
 
+====Trim Space
+    var trimSpace = "  Let's trim all the whitespace  "
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let trimmedString = trimSpace.trimmingCharacters(in: .whitespacesAndNewlines)
+        print(trimmedString)
+
+	//result: Let's trim all the whitespace
+    }
 
 
 
@@ -240,7 +252,17 @@ override func viewWillAppear(_ animated: Bool) {
 
 
 
-
+=====full màn hình khi chuyển màn trong iOS 13.2
+    @IBAction func nextVCAction(_ sender: UIButton) {
+        
+//        present(vc!, animated: true, completion: nil)
+//
+//        let vc = UIViewController()
+//        let vc = DetailVC()
+        let vc = storyboard?.instantiateViewController(identifier: "DetailVC") as? DetailVC
+        vc?.modalPresentationStyle = .fullScreen //or .overFullScreen for transparency
+        self.present(vc!, animated: true, completion: nil)
+    }
 
 
 
