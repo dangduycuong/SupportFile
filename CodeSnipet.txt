@@ -1,4 +1,4 @@
-- How to remove all the spaces and \n\r in a String?
+====How to remove all the spaces and \n\r in a String?
 let text = "This \n is a st\tri\rng"
 let test = String(text.filter { !" \n\t\r".contains($0) })
 
@@ -266,15 +266,101 @@ override func viewWillAppear(_ animated: Bool) {
 
 
 
+====LoadMore
+func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if self.stopLoadMore {
+            return
+        }
+        let endScrolling = scrollView.contentOffset.y + scrollView.frame.size.height
+        if endScrolling >= scrollView.contentSize.height - 30 && endScrolling <= scrollView.contentSize.height + 30 {
+            self.pageIndex += 1
+            self.getListCableLane(laneCode: self.searchTextField.text ?? "")
+//            if self.isBTSStation {
+//                self.getListCableLane(laneCode: self.searchTextField.text ?? "")
+//            } else {
+//
+//            }
+        }
+    }
+====Lấy toạ độ 4 góc của màn hình trong google map
+    func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
+        let projection = mapView.projection.visibleRegion()
+
+        let topLeftCorner: CLLocationCoordinate2D = projection.farLeft
+        let topRightCorner: CLLocationCoordinate2D = projection.farRight
+        let bottomLeftCorner: CLLocationCoordinate2D = projection.nearLeft
+        let bottomRightCorner: CLLocationCoordinate2D = projection.nearRight
+        print("Toạ độ: ", topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner)
+    }
+
+====Vừa nhập vừa lọc trên textField
+searchBarTextField.addTarget(self, action: #selector(searchRecords), for: .editingChanged)
+
+
+====Action trên marker google map
+func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+	print("chạm vào marker", marker.title as Any)
+        apiType = .findByMapFrame
+        setValueParams()
+        findByMapFrame(params: params)
+        return true
+}
 
 
 
 
+====lấy index trên marker
+mảng để marker: listStation
+mảng để quản lý marker: var markers = [GMSMarker]()
+trong func marker append marker vào markers:
+    //Đánh dấu các nhà trạm trên map
+    func loadListCritialPointsToMap() {
+	markers.removeAll()
+        for i in 0..<listStation.count {
+            if let lat = listStation[i].latitude, let lng = listStation[i].longtitude {
+                let marker = GMSMarker()
+                marker.position = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+                marker.title = listStation[i].address
+                marker.icon = GMSMarker.markerImage(with: UIColor.gray)
+                
+                markers.append(marker) //append marker to markers to manager
+                
+                marker.map = viewMap
+            }
+        }
+    }
+
+//Action when tapped in to marker (only marker). Get index of listStation
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        print("chạm vào marker", marker.title as Any)
+        
+        if let index = markers.index(of: marker) {
+            let tappedStation = listStation[index]
+            diaChiTextField.text = tappedStation.address
+            chuTramTextField.text = tappedStation.houseOwnerName
+            sdtChuTramTextField.text = tappedStation.houseOwnerPhone
+        }
+        
+        popupView.isHidden = false
+        
+        apiType = .findByMapFrame
+        setValueParams()
+        findByMapFrame(params: params)
+        return true
+    }
 
 
+====tỉ lệ layout trong code
+extension NSLayoutConstraint {
+    func constraintWithMultiplier(_ multiplier: CGFloat) -> NSLayoutConstraint {
+        return NSLayoutConstraint(item: self.firstItem!, attribute: self.firstAttribute, relatedBy: self.relation, toItem: self.secondItem, attribute: self.secondAttribute, multiplier: multiplier, constant: self.constant)
+    }
+}
 
+Usage:
 
-
-
-
-
+let newConstraint = constraintToChange.constraintWithMultiplier(0.75)
+view.removeConstraint(constraintToChange)
+view.addConstraint(newConstraint)
+view.layoutIfNeeded()
+constraintToChange = newConstraint
