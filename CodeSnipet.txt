@@ -568,5 +568,31 @@ func mapView(_ mapView: GMSMapView, didTap overlay: GMSOverlay) {
 
 
 
+====
+https://rapidapi.com/apidojo/api/hotels4
+==== add params, header to url
+let urlString = "https://api.newsapi.aylien.com/api/v1/stories"
+let parameters = ["categories.confident": "true", "source.name" : "The New York Times", "cluster" : "false", "cluster.algorithm" : "lingo", "sort_by" : "published_at", "sort_direction" : "desc", "cursor" : "*", "per_page" : "10"]
+let headers = ["X-AYLIEN-NewsAPI-Application-ID": "App-ID-Here", "X-AYLIEN-NewsAPI-Application-Key": "App-Key-Here"]
 
+var urlComponents = URLComponents(string: urlString)
+
+var queryItems = [URLQueryItem]()
+for (key, value) in parameters {
+    queryItems.append(URLQueryItem(name: key, value: value))
+}
+
+urlComponents?.queryItems = queryItems
+
+var request = URLRequest(url: (urlComponents?.url)!)
+request.httpMethod = "GET"
+
+for (key, value) in headers {
+    request.setValue(value, forHTTPHeaderField: key)
+}
+
+let task = URLSession.shared.dataTask(with: request) { (data, response, error) -> Void in
+    print(response)
+}
+task.resume()
 
