@@ -10,9 +10,9 @@ let test = String(text.filter { !" \n\t\r".contains($0) })
 extension Request {
     public func debugLog() -> Self {
         #if DEBUG
-            debugPrint("=======================================")
+            debugPrint("====")
             debugPrint(self)
-            debugPrint("=======================================")
+            debugPrint("====")
         #endif
         return self
     }
@@ -117,7 +117,7 @@ Vị trí của ảnh so với chữ tiêu đề trong button (bên phải)
 dropdownButton.semanticContentAttribute = UIApplication.shared
         .userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
 
-=================================================
+====
 // Hàm lọc. Dùng cho search và lọc append
 filtered = data.filter { word in
             word.lowercased().contains(searchText.lowercased())
@@ -126,7 +126,7 @@ filerred là mảng kết quả. data là mảng nguồn. (lọc mảng data app
 
 
 
-=================================================
+====
 Ẩn bàn phím textField khi nhập xong
     @IBOutlet var text: UITextField! {
       didSet {
@@ -163,7 +163,7 @@ trong viewDidload()
     }
 
 
-=========
+====
 Click button bàn phím thực hiện action
 UISearchBarDelegate {
     func updateSearchResultsForSearchController(searchController: UISearchController) {
@@ -177,7 +177,7 @@ func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         view.endEditing(true)
     }
 
-===========
+====
 LỌC Tìm Kiếm:
 Cách 1:
 filteredArray = arrDicts.filter({word in
@@ -197,7 +197,7 @@ hàm này chạy để vừa search vừa hiển thị ra kết quả tìm kiế
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     }
 
-===============
+====
 Lưu ý khi thực hiện xong bài này. Nhập xong với lọc và vừa nhập vừa lọc ra kết quả. Action trong keyboard, textField...
     Ẩn bàn phím khi thực hiện action. Ẩn khi ấn ra ngoài.
 link chi tiết: https://github.com/dangduycuong/MasterSearch
@@ -216,7 +216,7 @@ override func viewWillAppear(_ animated: Bool) {
     }
 
 
-=============================================
+====
 	//Giới hạn số ký tự nhập vào searchBar
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -252,7 +252,7 @@ override func viewWillAppear(_ animated: Bool) {
 
 
 
-=====full màn hình khi chuyển màn trong iOS 13.2
+====full màn hình khi chuyển màn trong iOS 13.2
     @IBAction func nextVCAction(_ sender: UIButton) {
         
 //        present(vc!, animated: true, completion: nil)
@@ -364,3 +364,209 @@ view.removeConstraint(constraintToChange)
 view.addConstraint(newConstraint)
 view.layoutIfNeeded()
 constraintToChange = newConstraint
+
+====Sắp xếp theo alpha b
+let names = ["A", "B", "C", "E", "D"]
+
+func backward(_ s1: String, _ s2: String) -> Bool {
+    return s1 < s2
+}
+var reversedNames = names.sorted(by: backward)
+
+====Action textfield
+    @IBAction func buttonSearch(_ sender: Any) {
+	
+    }
+
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        	self.buttonSearch(self)
+        	return true
+    	}
+
+====show/hide keyboard by button
+show:
+textField.becomeFirstResponder()
+hide:
+textField.resignFirstResponder()
+
+
+====delegate qua BaseTableViewCell
+    @IBAction func tappedEditAddress(_ sender: UIButton) {
+        diaChiView.isHidden = true
+        addressTextField.becomeFirstResponder()
+        if let delegate = self.delegate as? BTS360TongQuanCellDelegate {
+            params["address"] = addressTextField.text
+            params["houseOwnerName"] = houseOwnerNameTextField.text
+            params["houseOwnerPhone"] = houseOwnerPhoneTextField.text
+            delegate.isUpdate(isUpdate: true, params: params)
+        }
+    }
+
+====Lấy toạ độ 4 góc màn hình khi vừa loadMap
+var viewMap: GMSMapView?
+let projection = viewMap?.projection.visibleRegion()
+let topLeftCorner: CLLocationCoordinate2D = projection!.farLeft
+        let topRightCorner: CLLocationCoordinate2D = projection!.farRight
+        let bottomLeftCorner: CLLocationCoordinate2D = projection!.nearLeft
+        let bootomRightCorner: CLLocationCoordinate2D = projection!.nearRight
+
+====bo tròn 1 góc nào đó của uiview
+extension UIView {
+
+  func roundCorners(_ corners: CACornerMask, radius: CGFloat, borderColor: UIColor, borderWidth: CGFloat) {
+      self.layer.maskedCorners = corners
+      self.layer.cornerRadius = radius
+      self.layer.borderWidth = borderWidth
+      self.layer.borderColor = borderColor.cgColor
+
+  }
+
+}
+sử dụng: self.yourView.roundCorners([.layerMaxXMaxYCorner, .layerMaxXMinYCorner], radius: 20.0, borderColor: UIColor.red, borderWidth: 1)
+====
+func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
+    let latitude = mapView.camera.target.latitude
+    let longitude = mapView.camera.target.longitude
+    centerMapCoordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    self.placeMarkerOnCenter(centerMapCoordinate:centerMapCoordinate)
+}
+
+Function to place a marker on center point
+
+func placeMarkerOnCenter(centerMapCoordinate:CLLocationCoordinate2D) {
+    let marker = GMSMarker()
+    marker.position = centerMapCoordinate
+    marker.map = self.mapView
+}
+
+====How to pass data from ViewController to a ViewController in a tab bar
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    let barViewControllers = segue.destination as! UITabBarController
+    let destinationViewController = barViewControllers.viewControllers?[0] as! FirstViewController
+    destinationViewController.test = "Hello TabBar 1"
+
+    // access the second tab bar
+    let secondDes = barViewControllers.viewControllers?[1] as! SecondViewController
+    secondDes.test = "Hello TabBar 2"
+}
+
+
+====
+3 màn:
+màn 1: navigation controller
+màn 2: viewcontroller
+màn 3: viewcontroller
+
+passdata from màn 3 về màn 2 khi ấn vào nút back button trên thanh navigation
+Using UINavigationControllerDelegate:
+
+class DetailsViewController: UIViewController, UINavigationControllerDelegate {
+                                                        //     ^
+    var data: [String] = []                             // Important!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        navigationController?.delegate = self
+
+        data = ["data has changed!"]
+    }
+}
+
+Swift 2:
+
+extension DetailsViewController: UINavigationControllerDelegate {
+    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+        if let controller = viewController as? ProgressTableViewController {
+            controller.data = data    // Here you pass the data back to your original view controller
+        }
+    }
+}
+
+Swift 3:
+
+extension DetailsViewController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        (viewController as? ProgressTableViewController)?.data = data // Here you pass the to your original view controller
+    }
+}
+
+swift 4
+func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        (viewController as? TraCuuHaTangNimsVC)?.fromTongHopNims = false
+    }
+====
+//MARK: Long Press
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard isSelectedButton == .truyen_dan && isLeftOptionSelected == false else { return }
+        self.setupLongPressGesture()
+    }
+    
+    func setupLongPressGesture() {
+        let longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress))
+            longPressGesture.minimumPressDuration = 0.8 //second press
+            longPressGesture.delegate = self
+            self.tableView.addGestureRecognizer(longPressGesture)
+    }
+    
+    @objc func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            let touchPoint = gestureRecognizer.location(in: self.tableView)
+            let indexPath = tableView.indexPathForRow(at: touchPoint)
+            self.indexPath = indexPath
+//            self.oldTelFax = self.lstInfoTelForSub?[indexPath!.row].telFax ?? ""
+            self.tableView.deselectRow(at: indexPath!, animated: true)
+            let alert = UIAlertController(title: "Thông báo".language(), message: "Bạn muốn cập nhật loại ODF", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "KHÔNG".language(), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "CÓ".language(), style: .default, handler: { (alertAction) in
+                self.title = ""
+                let vc = Storyboard.QuanLyHaTangNIMS.nimsCapNhatLoaiODFVC()
+                self.navigationController?.pushViewController(vc, animated: true)
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+
+
+
+
+
+
+
+====action khi chạm vào polyline
+polyline.isTappable = true
+
+Whenever the polyline is tapped, the GMSMapViewDelegate method didTapOverlay is called
+
+func mapView(_ mapView: GMSMapView, didTap overlay: GMSOverlay) {
+        //Write your code here
+    }
+
+
+
+====vuốt sau đó dừng sẽ chạy vào func này:
+// stoped scroll google map
+    func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
+        if callByMapFrameDefault {
+            callAPIWhenStopScrollMap()
+        }
+        switch fromVC {
+        case .OtherVC:
+            // chạy lần 1 để đổi giá trị. Không gọi api khi vừa vào màn này, gọi khi vuốt bản đồ.
+            callByMapFrameDefault = true
+        default:
+            callAPIWhenStopScrollMap()
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
