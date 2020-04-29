@@ -626,3 +626,60 @@ func textFieldDidChangeSelection(_ textField: UITextField) {
 
 }
 
+====
+Truyền một object bằng Notification
+Điều kiện cần:
+1 object: enum TraCuuHaTangNimsUpdate {
+    case failre
+    case success
+}
+ var isSuccessUpdate = TraCuuHaTangNimsUpdate.failre
+Màn đăng ký:
+var isSuccessUpdate = TraCuuHaTangNimsUpdate.failre
+override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NotificationCenter.default.addObserver(self,
+        selector: #selector(checkSuccessUpdate),
+        name: .updateODFSuccess,
+        object: nil)
+    }
+//action khi nhận được thông báo
+@objc func checkSuccessUpdate(notification: Notification) {
+        isSuccessUpdate = notification.object as! TraCuuHaTangNimsUpdate
+        print("I've been notified from update odf")
+        guard isSuccessUpdate == .success else { return }
+        guard apiType == .findListODFByStation else { return }
+        pageIndex = 0
+        listTransmissionODF.removeAll()
+        setValueParams()
+        findListODFByStation(params: params)
+        tableView.reloadData()
+    }
+
+// Màn phát
+var isSuccessUpdate = TraCuuHaTangNimsUpdate.failre
+
+self.isSuccessUpdate = .success
+NotificationCenter.default.post(name: .updateSuccess, object: self.isSuccessUpdate)
+                        self.showNoticeMessage(message: message)
+
+====Action in alert
+func showAlertController(title: String, message: String, cancelTitle: String = VTLocalizedString.localized(key: "cancel").uppercased(), cancelAction: (() -> Void)?, okTitle: String = VTLocalizedString.localized(key: "OK").uppercased(), okAction: (() -> Void)?) {
+        let alertController: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: cancelTitle.uppercased(), style: .default) { (cancelButton) in
+            cancelAction?()
+        })
+        alertController.addAction(UIAlertAction(title: okTitle.uppercased(), style: .default) { (cancelButton) in
+            okAction?()
+        })
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+
+====cho bản đồ về giữa map
+let latitude = marker.position.latitude
+        let longitude = marker.position.longitude
+        if isChangeCable {
+            zoomMap = 17
+        }
+        let location = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: Float(zoomMap))
