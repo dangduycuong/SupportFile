@@ -458,6 +458,8 @@ màn 2: viewcontroller
 màn 3: viewcontroller
 
 passdata from màn 3 về màn 2 khi ấn vào nút back button trên thanh navigation
+
+
 Using UINavigationControllerDelegate:
 
 class DetailsViewController: UIViewController, UINavigationControllerDelegate {
@@ -683,3 +685,72 @@ let latitude = marker.position.latitude
             zoomMap = 17
         }
         let location = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: Float(zoomMap))
+
+
+====Set multi action in 1 alert
+func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        let backupText = masterTextField.text
+        // Create the alert controller
+        let alertController = UIAlertController(title: "Thông báo", message: "Bạn muốn xoá hết", preferredStyle: .alert)
+
+        // Create the actions
+        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+            UIAlertAction in
+            self.masterTextField.text = ""
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+            UIAlertAction in
+            self.masterTextField.text = backupText
+        }
+        
+        let otherAction = UIAlertAction(title: "Xoá hết và dừng nhập", style: .destructive) {
+            UIAlertAction in
+            self.masterTextField.text = ""
+            self.masterTextField.resignFirstResponder()
+        }
+
+        // Add the actions
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        alertController.addAction(otherAction)
+
+        // Present the controller
+        self.present(alertController, animated: true, completion: nil)
+        return false
+    }
+
+====Display activity indicator on api call Swift
+func showLoader(view: UIView) -> UIActivityIndicatorView {
+
+        //Customize as per your need
+        let spinner = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height:40))
+        spinner.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        spinner.layer.cornerRadius = 3.0
+        spinner.clipsToBounds = true
+        spinner.hidesWhenStopped = true
+        spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white;
+        spinner.center = view.center
+        view.addSubview(spinner)
+        spinner.startAnimating()
+        UIApplication.shared.beginIgnoringInteractionEvents()
+
+        return spinner
+    }
+
+And, For hide Activity Indicator
+
+extension UIActivityIndicatorView {  
+     func dismissLoader() {
+            self.stopAnimating()
+            UIApplication.shared.endIgnoringInteractionEvents()
+        } 
+ }
+
+And, the UIViewController where you used Indicator as below.
+
+    //Show
+    let spinner = showLoader(view: self.view)
+
+    //Hide
+    spinner.dismissLoader()
