@@ -23,6 +23,12 @@ extension Request {
   Alamofire.request(url).debugLog()
             .responseJSON( completionHandler: { response in
    })
+====limited char in textview
+//MARK:- TextView Delegate
+func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    //300 chars restriction
+    return textView.text.count + (text.count - range.length) <= 300
+}
 
 - Remove ký tự bất kỳ trong chuỗi String
         var phrase = """
@@ -476,6 +482,28 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     secondDes.test = "Hello TabBar 2"
 }
 
+...	navi item1; 
+tabbar
+	navi item2;
+	if let navigationVC = self.tabBarController?.viewControllers?[1] as? BaseNavigationController {
+	if let vc = navigationVC.childViewControllers.first as? TraCuuHaTangNimsVC 	{
+                    vc.apiType = .findPillarByUserLocation
+                    vc.thongTinTraCuu = .cot
+                    vc.fromTongHopNims = true
+                    self.tabBarController?.selectedIndex = 1
+                }
+            }
+
+//pass data when tap tabbar button
+func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        guard let viewControllers = viewControllers else {
+            return
+        }
+        
+        if let item1 = viewControllers[0] as? ItemVC1, let item2 = viewControllers[1] as? ItemVC2 {
+            item2.data = item1.item1TextView.text
+        }
+    }
 
 ====
 3 màn:
@@ -523,6 +551,8 @@ swift 4
 func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         (viewController as? TraCuuHaTangNimsVC)?.fromTongHopNims = false
     }
+
+
 ====
 //MARK: Long Press
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -714,6 +744,10 @@ let latitude = marker.position.latitude
 
 
 viewMap?.camera = location
+hoặc
+
+Try doing this:
+mapView.animate(to: location)
 ====Set multi action in 1 alert
 func textFieldShouldClear(_ textField: UITextField) -> Bool {
         let backupText = masterTextField.text
@@ -894,3 +928,60 @@ func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPat
 ====Change keyboard type of a text field in Swift during runtime
 textField.keyboardType = .numberPad
 textField.reloadInputViews()
+
+====http error
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+    <key>NSExceptionDomains</key>
+    <dict>
+        <key>example.com</key>
+        <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+        </dict>
+    </dict>
+</dict>
+
+
+====Giới hạn ký tự nhập vào textView và ẩn bàn phím khi nhấn phím return:
+func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            dropdown.hide()
+            textView.resignFirstResponder()
+            return false
+        }
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.count
+        switch textView {
+        case odfCode2TextView:
+            return numberOfChars < 13
+        default:
+            return numberOfChars < 3
+        }
+    }
+====Chiều cao tableView tự co giãn theo nội dung
+@IBOutlet weak var heightTableView: NSLayoutConstraint!
+set trong hamf cell for row at
+self.heightTableView.constant = tableView.contentSize.height
+====action khi chạm vào backround tableView
+set trong hàm cell for row at
+let tap = UITapGestureRecognizer(target: self, action: #selector(tableTapped))
+        self.tableView.backgroundView = UIView()
+        self.tableView.backgroundView?.addGestureRecognizer(tap)
+----
+action viết ngoài hàm cell for row at
+@objc func tableTapped() {
+	//do something
+}
+
+====đổ bóng cho view
+searchView.layer.cornerRadius = 16
+        searchView.layer.shadowColor = UIColor.black.cgColor
+        searchView.layer.shadowOpacity = 0.8
+        searchView.layer.shadowOffset = .zero
+        searchView.layer.shadowRadius = 10
+
