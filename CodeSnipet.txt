@@ -985,3 +985,33 @@ searchView.layer.cornerRadius = 16
         searchView.layer.shadowOffset = .zero
         searchView.layer.shadowRadius = 10
 
+====Khoanh vùng trên map
+    func showBreakPoint() {
+        guard let latutide = infoBreakPoint.latitude, let longitude = infoBreakPoint.longitude, let radius = infoBreakPoint.radius else {
+            return
+        }
+        let circle = GMSCircle()
+        circle.radius = radius
+        circle.fillColor = UIColor.red
+        circle.position = CLLocationCoordinate2D(latitude: latutide, longitude: longitude)
+        circle.strokeWidth = 5
+        circle.strokeColor = UIColor.black
+        circle.map = mapView
+    }
+
+====bound các toạ đô
+var bounds = GMSCoordinateBounds()
+            for location in coordinatesTemp {
+                if let latitude = location.latitude, let longitude = location.longitude {
+                    let position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                    bounds = bounds.includingCoordinate(position)
+                }
+            }
+            let update = GMSCameraUpdate.fit(bounds, withPadding: 100)
+            mapView.animate(with: update)
+
+// lưu ý  map: các isTapped = true/false nghĩa  là gì: nghĩa  là nếu == false, thì coi như tap vào coordinate. Còn == true là tap vào marker hoặc polyLine.
+
+====
+vị trí text trong textView
+cableCodeTextView.textContainerInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 64)
