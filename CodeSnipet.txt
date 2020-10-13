@@ -1015,3 +1015,56 @@ var bounds = GMSCoordinateBounds()
 ====
 vị trí text trong textView
 cableCodeTextView.textContainerInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 64)
+====chạm vào polyline lấy ra toạ độ với sai số
+if GMSGeometryIsLocationOnPathTolerance(coordinate, polyline.path!, true, 5) {
+                self.mapView(mapView, didTap: polyline)
+                markerPolyline(position: coordinate, title: polyline.title)
+                break
+            }
+====UITextfield placeholder color and fontsize
+let yourTextFieldName = UITextField(frame: CGRect(x: 0, y: 0, width: 180, height: 21))
+yourTextFieldName.attributedPlaceholder = NSAttributedString(string: "placeholder text", attributes: [NSForegroundColorAttributeName: UIColor.white])
+====chuyển màn trong appdelegate
+public extension UIApplication {
+    class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+
+        if let nav = base as? UINavigationController {
+            return getTopViewController(base: nav.visibleViewController)
+
+        } else if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
+            return getTopViewController(base: selected)
+
+        } else if let presented = base?.presentedViewController {
+            return getTopViewController(base: presented)
+        }
+        return base
+    }
+}
+dùng
+let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: "TrungXoSoVC") as! TrungXoSoVC
+UIApplication.getTopViewController()?.navigationController?.pushViewController(vc, animated: true)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
