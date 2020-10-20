@@ -1045,9 +1045,36 @@ let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(
 UIApplication.getTopViewController()?.navigationController?.pushViewController(vc, animated: true)
 
 
+====multi color UILabel (https://github.com/anoop4real/UILabelStyles)
+extension NSMutableAttributedString {
+    // If no text is send, then the style will be applied to full text
+    func setColorForText(_ textToFind: String?, with color: UIColor) {
+        
+        let range:NSRange?
+        if let text = textToFind{
+            range = self.mutableString.range(of: text, options: .caseInsensitive)
+        }else{
+            range = NSMakeRange(0, self.length)
+        }
+        if range!.location != NSNotFound {
+            addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: range!)
+        }
+    }
+}
 
-
-
+Use:
+    func setMultiColoredLabel() {
+        let str = "Hoặc soạn DK gửi 9224 (9000đ/30 ngày)"
+        let trimmedString = str.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        let string = NSMutableAttributedString(string: trimmedString)
+        
+        string.setColorForText("DK", with: #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1))
+        string.setColorForText("9224", with: #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1))
+        string.setColorForText("/", with: #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1))
+        string.setColorForText("gửi", with: #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1))
+        yourLabel.attributedText = string
+    }
 
 
 
