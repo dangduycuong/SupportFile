@@ -1109,7 +1109,30 @@ tạo action cho phần kéo
 
 
 
-
+MARK: ENUM
+enum ChooseColor {
+    case blue
+    case red
+    case purple
+    case yellow
+    
+    static let all = [blue, red, purple, yellow]
+    
+    var value: UIColor {
+        get {
+            switch self {
+            case .blue:
+                return .blue
+            case .red:
+                return .red
+            case .purple:
+                return .purple
+            case .yellow:
+                return .yellow
+            }
+        }
+    }
+}
 
 
 
