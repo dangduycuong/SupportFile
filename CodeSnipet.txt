@@ -1078,7 +1078,33 @@ Use:
 
 
 
+//MARK: Kéo ảnh quanh màn hình
+1. Tạo ảnh bằng code hoặc kéo outlet
+	    func createImage(number: Int) {
+        let lightBulb = UIImageView(frame: CGRect(x: 100, y: 100, width: 50, height: 50))
+        var name: String = "lightBulb"
+        if number % 2 == 0 {
+            name = "sochan"
+        }
+        lightBulb.image = UIImage(named: name)
+        lightBulb.contentMode = .scaleToFill
+	//đây là gán action kéo
+        lightBulb.isUserInteractionEnabled = true
+        lightBulb.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:))))
+        self.view.addSubview(lightBulb)
+    }
 
+tạo action cho phần kéo
+	@objc func handlePan(recognizer: UIPanGestureRecognizer) {
+        
+        let translation = recognizer.translation(in: self.view)
+        if let view = recognizer.view {
+            view.center = CGPoint(x:view.center.x + translation.x,
+                                  y:view.center.y + translation.y)
+        }
+        
+        recognizer.setTranslation(.zero, in: self.view)
+    }
 
 
 
