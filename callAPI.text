@@ -1,0 +1,70 @@
+import UIKit
+
+enum Result<Success, Error: Swift.Error> {
+    case success(Success)
+    case failure(Error)
+}
+
+// override the Result.get() method
+extension Result {
+    func get() throws -> Success {
+        switch self {
+        case .success(let value):
+            return value
+        case .failure(let error):
+            throw error
+        }
+    }
+}
+
+// use generics - this is where you can decode your data
+extension Result where Success == Data {
+    func decoded<T: Decodable>(using decoder: JSONDecoder = .init()) throws -> T {
+        let data = try get()
+        return try decoder.decode(T.self, from: data)
+    }
+}
+
+class Network {
+    static let shared: Network = Network()
+    
+    func getCategorByAPI(url: String, params: [URLQueryItem]? = nil, headers: [String: String]? = nil, method: HTTPMethod, completion: @escaping(Result<Data, Error>) -> Void) {
+        // You might want to stick this into another method
+        let url = URL(string: url)!
+        var request  = URLRequest(url: url)
+        request.httpMethod = method.value
+        //        let boundary = "Boundary-\(UUID().uuidString)"
+        //    request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        request.allHTTPHeaderFields = headers
+        let dataTask = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            if let response = response {
+                let httpResponse = response as! HTTPURLResponse
+                let status = httpResponse.statusCode
+                
+                switch status {
+                case 200:
+                    print("Thanh cong")
+                default:
+                    break
+                }
+                
+                if !(200...299).contains(httpResponse.statusCode) && !(httpResponse.statusCode == 304) {
+                    if let httpError = error {// ... convert httpResponse.statusCode into a more readable error
+                        //                        completion(.failure(httpError as! Error))
+                        completion(.failure(httpError))
+                    }
+                }
+                
+                if let data = data {
+                    completion(.success(data))
+                }
+            }
+        })
+        dataTask.resume()
+    }
+}
