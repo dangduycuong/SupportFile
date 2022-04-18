@@ -1134,10 +1134,28 @@ enum ChooseColor {
     }
 }
 
-
-
-
-
+====search co dau khong phan biet
+func filteringNames(key: String) {
+        if key == "" {
+            resultSearch = listNames
+        } else {
+            resultSearch = listNames.filter { (name: String) in
+                let textName = name.lowercased()
+                let keyText = key.lowercased()
+                if textName.unaccent().range(of: keyText.unaccent()) != nil {
+                    return true
+                }
+                return false
+            }
+        }
+        tableView.reloadData()
+    }
+extension String {
+    func unaccent() -> String {
+        return self.folding(options: .diacriticInsensitive, locale: .current)
+    }
+}
+====
 
 
 
