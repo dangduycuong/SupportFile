@@ -1,3 +1,15 @@
+====How to remove border of the navigationBar in swift?
+Removing border:
+
+self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for:.default)
+self.navigationController?.navigationBar.shadowImage = UIImage()
+self.navigationController?.navigationBar.layoutIfNeeded()
+Restoring border:
+
+self.navigationController?.navigationBar.setBackgroundImage(nil, for:.default)
+self.navigationController?.navigationBar.shadowImage = nil
+self.navigationController?.navigationBar.layoutIfNeeded()
+====
 ====How to remove all the spaces and \n\r in a String?
 let text = "This \n is a st\tri\rng"
 let test = String(text.filter { !" \n\t\r".contains($0) })
